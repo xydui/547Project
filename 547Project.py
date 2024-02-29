@@ -36,7 +36,7 @@ def provide_feedback(review_text, openai_api_key):
     chat_completion = client.chat.completions.create(
         model = "gpt-3.5-turbo-0125",
         messages = [{"role": "user", "content": prompt}],
-        max_tokens = 50,
+        max_tokens = 100,
         temperature = 0.7
     )
    
@@ -51,12 +51,12 @@ def analyze_sentiment(review_improvement, openai_api_key):
     client = OpenAI(api_key = openai_api_key)
     
     combined_reviews = " ".join(review_improvement[0:77])
-    prompt = "You are a concert organizer. Based on the following reviews of concerts, please highlight the areas for improvements.\n" + combined_reviews
+    prompt = "You are a concert organizer. Based on the following reviews of concerts, please highlight top 5 areas for improvements.\n" + combined_reviews
 
     chat_completion = client.chat.completions.create(
         model = "gpt-3.5-turbo-0125",
         messages = [{"role": "user", "content": prompt}],
-        max_tokens = 150,
+        max_tokens = 250,
         temperature = 0.7
     )
    
