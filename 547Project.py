@@ -14,7 +14,7 @@ df = pd.read_csv('https://raw.githubusercontent.com/xydui/547Project/main/Combin
 # ---------------------------
 # Word Cloud Settings
 # ---------------------------
-custom_stopwords = STOPWORDS.union({'concert', 'show', 'see', 'one'})
+custom_stopwords = STOPWORDS.union({'concert', 'show', 'see', 'one', 'Billie', 'Beyonce', 'Madonna', 'Katy', 'Perry', 'Taylor', 'Swift'})
 
 def generate_wordcloud(text):
     wordcloud = WordCloud(width = 800, height = 400, background_color = 'white', stopwords = custom_stopwords).generate(text)
@@ -31,7 +31,7 @@ def generate_wordcloud(text):
 def analyze_sentiment(review_text, openai_api_key):
     client = OpenAI(api_key = openai_api_key)
     
-    prompt = "Analyze the sentiment of the following review and suggest an appropriate response. Please only output the response.:\nReview: " + review_text
+    prompt = "Analyze the sentiment of the following review and suggest an appropriate response:\nReview: " + review_text
 
     chat_completion = client.chat.completions.create(
         model = "gpt-3.5-turbo-0125",
@@ -46,21 +46,57 @@ def analyze_sentiment(review_text, openai_api_key):
 
 
 # ---------------------------
-# Streamlit Layout
+# Streamlit - Config
 # ---------------------------
+# page settings
+st.set_page_config(
+    page_title = "Concert Feedback Analysis",
+    layout = "wide",
+    initial_sidebar_state = "expanded"
+)
+
 # title
-st.title('Concert Feedback Analysis')
+st.title('🎸 Concert Feedback Analysis')
+
+
+
+# ---------------------------
+# Streamlit - Sidebar
+# ---------------------------
+# Artist Selection
+artist_selection = st.sidebar.selectbox('Select an Artist', df['Artist'].unique())
 
 # Textbox for entering OpenAI API key
-openai_api_key = st.text_input("Enter your OpenAI API Key:", type = "password")
+openai_api_key = st.sidebar.text_input("Enter your OpenAI API Key:", type = "password")
 
 
+
+# ----------------------------------
+# Streamlit - Main
+# ----------------------------------
 # get data from dataset
-artist_selection = st.selectbox('Select an Artist', df['Artist'].unique())
 artist_reviews = df[df['Artist'] == artist_selection]['Review'].tolist()
 
-# word cloud
-if st.button('Show Word Cloud'):
+
+
+# ----------------------------------
+# Streamlit - Main - Word Cloud
+# ----------------------------------
+st.subheader('Word Cloud')
+
+col1, col2 = st.columns(2)
+
+# positive word cloud
+with col1:
+    st.write("Positive Keywords")
+    combined_text = " ".join(artist_reviews)
+    st.set_option('deprecation.showPyplotGlobalUse', False)  # To hide warning
+    generate_wordcloud(combined_text)
+    st.pyplot()
+
+# negative word cloud
+with col2:
+    st.write("Positive Keywords")
     combined_text = " ".join(artist_reviews)
     st.set_option('deprecation.showPyplotGlobalUse', False)  # To hide warning
     generate_wordcloud(combined_text)
@@ -68,10 +104,14 @@ if st.button('Show Word Cloud'):
 
 
 
+# ----------------------------------
+# Streamlit - Main - Chatbot
+# ----------------------------------
+st.write("\n\n")
+st.subheader('Feedback')
+
 # Textbox for user to enter their review
 review = st.text_area("Write your review here:")
-
-
 
 # Button to submit review
 if st.button("Submit Review"):
