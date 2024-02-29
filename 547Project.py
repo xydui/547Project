@@ -14,7 +14,7 @@ df = pd.read_csv('https://raw.githubusercontent.com/xydui/547Project/main/Combin
 # ---------------------------
 # Word Cloud Settings
 # ---------------------------
-custom_stopwords = STOPWORDS.union({'concert', 'show', 'see', 'one', 'Billie', 'Beyonce', 'Madonna', 'Katy', 'Perry', 'Taylor', 'Swift'})
+custom_stopwords = STOPWORDS.union({'concert', 'show', 'see', 'one', 'Billie', 'Beyonce', 'Beyoncé', 'Madonna', 'Katy', 'Perry', 'Taylor', 'Swift'})
 
 def generate_wordcloud(text):
     wordcloud = WordCloud(width = 800, height = 400, background_color = 'white', stopwords = custom_stopwords).generate(text)
@@ -76,6 +76,11 @@ openai_api_key = st.sidebar.text_input("Enter your OpenAI API Key:", type = "pas
 # ----------------------------------
 # get data from dataset
 artist_reviews = df[df['Artist'] == artist_selection]['Review'].tolist()
+artist_data = df[df['Artist'] == artist_selection]
+
+# positive & negative feedback
+positive_feedback = artist_data[artist_data['Rating'] > 3]['Review'].tolist()
+negative_feedback = artist_data[artist_data['Rating'] <= 3]['Review'].tolist()
 
 
 
@@ -89,15 +94,15 @@ col1, col2 = st.columns(2)
 # positive word cloud
 with col1:
     st.write("Positive Keywords")
-    combined_text = " ".join(artist_reviews)
+    combined_text = " ".join(positive_feedback)
     st.set_option('deprecation.showPyplotGlobalUse', False)  # To hide warning
     generate_wordcloud(combined_text)
     st.pyplot()
 
 # negative word cloud
 with col2:
-    st.write("Positive Keywords")
-    combined_text = " ".join(artist_reviews)
+    st.write("Negative Keywords")
+    combined_text = " ".join(negative_feedback)
     st.set_option('deprecation.showPyplotGlobalUse', False)  # To hide warning
     generate_wordcloud(combined_text)
     st.pyplot()
