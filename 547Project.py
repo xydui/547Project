@@ -56,16 +56,16 @@ review = st.text_area("Write your review here:")
 # Function to analyze sentiment
 def analyze_sentiment(review_text, api_key):
     openai.api_key = api_key
-    response = openai.Completion.create(
+    response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo-0125",
-        prompt=f"Analyze the following review for sentiment and provide appropriate feedback:\n\n'{review_text}'\n\n",
-        temperature=0.5,
-        max_tokens=60,
-        top_p=1.0,
-        frequency_penalty=0.0,
-        presence_penalty=0.0
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": f"{review_text}"}
+        ]
     )
-    return response.choices[0].text.strip()
+    return response['choices'][0]['message']['content']
+
+
 
 # Button to submit review
 if st.button("Submit Review"):
