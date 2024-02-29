@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import openai
+from openai import OpenAI
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
 
@@ -33,9 +33,6 @@ st.title('Concert Feedback Analysis')
 # Textbox for entering OpenAI API key
 api_key = st.text_input("Enter your OpenAI API Key:", type="password")
 
-# Save the API key in session state to reuse it for the session
-if api_key:
-    st.session_state['api_key'] = api_key
 
 # get data from dataset
 artist_selection = st.selectbox('Select an Artist', df['Artist'].unique())
@@ -55,15 +52,20 @@ review = st.text_area("Write your review here:")
 
 # Function to analyze sentiment
 def analyze_sentiment(review_text, api_key):
-    openai.api_key = api_key
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-0125",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": f"{review_text}"}
-        ]
-    )
-    return response['choices'][0]['message']['content']
+    client = OpenAI(api_key)
+    
+    chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "user",
+            "content": "Say this is a test",
+        }
+    ],
+    model="gpt-3.5-turbo-0125",)
+   
+    return messages['choices'][0]['message']['content']
+
+
 
 
 
