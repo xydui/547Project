@@ -31,7 +31,7 @@ def generate_wordcloud(text):
 def provide_feedback(review_text, openai_api_key):
     client = OpenAI(api_key = openai_api_key)
     
-    prompt = "Analyze the sentiment of the following review and suggest an appropriate response:\nReview: " + review_text
+    prompt = "You are a concert orgainzer. Read the following concert review and suggest an appropriate response:\nReview: " + review_text
 
     chat_completion = client.chat.completions.create(
         model = "gpt-3.5-turbo-0125",
