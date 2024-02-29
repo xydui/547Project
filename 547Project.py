@@ -136,7 +136,7 @@ with col2:
 # Streamlit - Main - Improvement
 # ----------------------------------
 st.write('\n\n')
-st.subheader('Potential Improvements')
+st.subheader('Areas for Improvements')
 
 # Button to run analysis
 if st.button("Analyze Potential Improvements"):
