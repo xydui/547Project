@@ -4,7 +4,7 @@ import pandas as pd
 
 
 # Load the dataset
-df = pd.read_excel('/547Project/Combined.xlsx')
+df = pd.read_excel('https://github.com/xydui/547Project/blob/5ff6d690d7481782fefe62d942340b7755cfc726/Combined.xlsx')
 print(df.head())
 
 
