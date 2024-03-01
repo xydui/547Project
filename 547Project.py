@@ -49,7 +49,7 @@ def provide_recommendation(artist):
     client = OpenAI(api_key = openai_api_key)
 
     prompt = "You are a member of the artist management company. Please recommend to the fans of " + artist + \
-             " some works related to the artist (e.g, recent albums, movies, books). " + \
+             " some recent albums, movies, books or other works related to the artist. " + \
              "Please make the response in bullet points and sound like a member of artist management team. " + \
              "Please remove the beginning like 'certainly' or 'dear fans'."
 
