@@ -14,9 +14,7 @@ df = pd.read_csv('https://raw.githubusercontent.com/xydui/547Project/main/Combin
 # ---------------------------
 # Word Cloud Settings
 # ---------------------------
-custom_stopwords = STOPWORDS.union({'concert', 'show', 'see', 'one', 'Billie', 'Beyonce', 'Beyoncé', 'Madonna', 'Katy', 'Perry', 'Taylor', 'Swift'})
-
-def generate_wordcloud(text):
+def generate_wordcloud(custom_stopwords, text):
     wordcloud = WordCloud(width = 800, height = 400, background_color = 'white', stopwords = custom_stopwords).generate(text)
     plt.figure(figsize = (10, 5))
     plt.imshow(wordcloud, interpolation = 'bilinear')
@@ -39,7 +37,7 @@ def provide_feedback(review_text, openai_api_key):
         max_tokens = 50,
         temperature = 0.7
     )
-   
+  
     return chat_completion.choices[0].message.content
 
 
@@ -139,25 +137,29 @@ with OrganizerTab:
 
     # ------------ Word Cloud ---------- #
     st.subheader('Word Cloud')
-
     col1, col2 = st.columns(2)
 
     # positive word cloud
+    positive_stopwords = STOPWORDS.union({'concert', 'show', 'see', 'one', 'Billie', 'Beyonce', 'Beyoncé', 'Madonna', 'Katy', 'Perry', 'Taylor', 'Swift'})
+    
     with col1:
         st.write("Positive Keywords")
         combined_text = " ".join(positive_feedback)
         st.set_option('deprecation.showPyplotGlobalUse', False)  # To hide warning
-        generate_wordcloud(combined_text)
+        generate_wordcloud(positive_stopwords, combined_text)
         st.pyplot()
 
     # negative word cloud
+    negative_stopwords = STOPWORDS.union({'concert', 'show', 'see', 'one', 'Billie', 'Beyonce', 'Beyoncé', 'Madonna', 'Katy', 'Perry', 'Taylor', 'Swift', 'great', 'good', 'amazing', 'love'})
+
     with col2:
         st.write("Negative Keywords")
         combined_text = " ".join(negative_feedback)
         st.set_option('deprecation.showPyplotGlobalUse', False)  # To hide warning
-        generate_wordcloud(combined_text)
+        generate_wordcloud(negative_stopwords, combined_text)
         st.pyplot()
     
+
 
     # ------------ Improvement ---------- #
     st.write('\n\n')
