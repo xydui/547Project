@@ -50,7 +50,7 @@ def provide_recommendation(artist):
 
     prompt = "You are a member of the artist management company. Please recommend to the fans of " + artist + \
              " some recent albums, movies, books or other works related to the artist. " + \
-             "Please make the response in bullet points and sound like a member of artist management team. " + \
+             "Please generate a short response in bullet points and sound like a member of artist management team. " + \
              "Please remove the beginning like 'certainly' or 'dear fans'."
 
     chat_completion = client.chat.completions.create(
