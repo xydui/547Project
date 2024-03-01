@@ -56,7 +56,7 @@ def provide_recommendation(artist):
     chat_completion = client.chat.completions.create(
         model = "gpt-4-0125-preview",
         messages = [{"role": "user", "content": prompt}],
-        max_tokens = 400,
+        max_tokens = 500,
         temperature = 0.7
     )
 
