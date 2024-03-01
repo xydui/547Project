@@ -36,7 +36,7 @@ def provide_feedback(review_text, openai_api_key):
     chat_completion = client.chat.completions.create(
         model = "gpt-3.5-turbo-0125",
         messages = [{"role": "user", "content": prompt}],
-        max_tokens = 100,
+        max_tokens = 50,
         temperature = 0.7
     )
    
@@ -69,13 +69,16 @@ def analyze_sentiment(review_improvement, openai_api_key):
 # ---------------------------
 # page settings
 st.set_page_config(
-    page_title = "Concert Feedback Analysis",
+    page_title = "Review IQ Master",
     layout = "wide",
     initial_sidebar_state = "expanded"
 )
 
 # title
-st.title('🎸 Concert Feedback Analysis')
+st.title('🎸 Review IQ Master')
+
+# tabbed navigation
+CustomerTab, OrganizerTab = st.tabs(['Customer Tab', 'Organizer Tab'])
 
 
 
@@ -83,7 +86,7 @@ st.title('🎸 Concert Feedback Analysis')
 # Streamlit - Sidebar
 # ---------------------------
 # Artist Selection
-artist_selection = st.sidebar.selectbox('Select an Artist', df['Artist'].unique())
+artist_selection = st.sidebar.selectbox('Select an Artist:', df['Artist'].unique())
 
 # Textbox for entering OpenAI API key
 openai_api_key = st.sidebar.text_input("Enter your OpenAI API Key:", type = "password")
@@ -106,65 +109,64 @@ review_improvement = artist_data[artist_data['Rating'] <= 2]['Review']
 
 
 
-
 # ----------------------------------
-# Streamlit - Main - Word Cloud
+# Streamlit - Customer Tab
 # ----------------------------------
-st.subheader('Word Cloud')
+with CustomerTab:
 
-col1, col2 = st.columns(2)
+    # ------------ Review Chatbot ---------- #
+    st.subheader('Feedback')
 
-# positive word cloud
-with col1:
-    st.write("Positive Keywords")
-    combined_text = " ".join(positive_feedback)
-    st.set_option('deprecation.showPyplotGlobalUse', False)  # To hide warning
-    generate_wordcloud(combined_text)
-    st.pyplot()
+    # Textbox for user to enter their review
+    review = st.text_area("Please write your review here:")
 
-# negative word cloud
-with col2:
-    st.write("Negative Keywords")
-    combined_text = " ".join(negative_feedback)
-    st.set_option('deprecation.showPyplotGlobalUse', False)  # To hide warning
-    generate_wordcloud(combined_text)
-    st.pyplot()
+    # Button to submit review
+    if st.button("Submit Review"):
+        if not openai_api_key:
+            st.error("Please enter your OpenAI API key to proceed.")
+        elif not review:
+            st.error("Please write a review to submit.")
+        else:
+            feedback = provide_feedback(review, openai_api_key)
+            st.success(feedback)
 
 
 
 # ----------------------------------
-# Streamlit - Main - Improvement
+# Streamlit - Orgainzer Tab
 # ----------------------------------
-st.write('\n\n')
-st.subheader('Areas for Improvements')
+with OrganizerTab:
 
-# Button to run analysis
-if st.button("Analyze Potential Improvements"):
-    if not openai_api_key:
-        st.error("Please enter your OpenAI API key to proceed.")
-    else:
-        feedback = analyze_sentiment(review_improvement, openai_api_key)
-        st.success(feedback)
+    # ------------ Word Cloud ---------- #
+    st.subheader('Word Cloud')
 
+    col1, col2 = st.columns(2)
 
+    # positive word cloud
+    with col1:
+        st.write("Positive Keywords")
+        combined_text = " ".join(positive_feedback)
+        st.set_option('deprecation.showPyplotGlobalUse', False)  # To hide warning
+        generate_wordcloud(combined_text)
+        st.pyplot()
 
+    # negative word cloud
+    with col2:
+        st.write("Negative Keywords")
+        combined_text = " ".join(negative_feedback)
+        st.set_option('deprecation.showPyplotGlobalUse', False)  # To hide warning
+        generate_wordcloud(combined_text)
+        st.pyplot()
+    
 
-# ----------------------------------
-# Streamlit - Main - Chatbot
-# ----------------------------------
-st.write('\n\n')
-st.subheader('Feedback')
+    # ------------ Improvement ---------- #
+    st.write('\n\n')
+    st.subheader('Areas for Improvements')
 
-# Textbox for user to enter their review
-review = st.text_area("Please write your review here:")
-
-# Button to submit review
-if st.button("Submit Review"):
-    if not openai_api_key:
-        st.error("Please enter your OpenAI API key to proceed.")
-    elif not review:
-        st.error("Please write a review to submit.")
-    else:
-        # Analyze the review's sentiment and provide feedback
-        feedback = provide_feedback(review, openai_api_key)
-        st.success(feedback)
+    # Button to run analysis
+    if st.button("Analyze Potential Improvements"):
+        if not openai_api_key:
+            st.error("Please enter your OpenAI API key to proceed.")
+        else:
+            feedback = analyze_sentiment(review_improvement, openai_api_key)
+            st.success(feedback)
