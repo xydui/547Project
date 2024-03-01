@@ -54,8 +54,7 @@ def provide_recommendation(artist):
              "Please remove the beginning like 'certainly' or 'dear fans'."
 
     chat_completion = client.chat.completions.create(
-        # gpt-4-0125-preview
-        model = "gpt-3.5-turbo-0125",
+        model = "gpt-4-0125-preview",
         messages = [{"role": "user", "content": prompt}],
         max_tokens = 500,
         temperature = 0.7
