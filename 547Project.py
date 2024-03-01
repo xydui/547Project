@@ -34,10 +34,33 @@ def provide_feedback(review_text, openai_api_key):
     chat_completion = client.chat.completions.create(
         model = "gpt-3.5-turbo-0125",
         messages = [{"role": "user", "content": prompt}],
-        max_tokens = 50,
+        max_tokens = 200,
         temperature = 0.7
     )
   
+    return chat_completion.choices[0].message.content
+
+
+
+# ---------------------------
+# OpenAI API - Recommendation
+# ---------------------------
+def provide_recommendation(artist):
+    client = OpenAI(api_key = openai_api_key)
+
+    prompt = "You are a member of the artist management company. Please recommend to the fans of " + artist + \
+             " some recent albums, movies, books or other works related to the artist. " + \
+             "Please make the response in bullet points and sound like a member of artist management team. " + \
+             "Please remove the beginning like 'certainly' or 'dear fans'."
+
+    chat_completion = client.chat.completions.create(
+        model = "gpt-4-0125-preview",
+        messages = [{"role": "user", "content": prompt}],
+        max_tokens = 400,
+        temperature = 0.7
+    )
+
+
     return chat_completion.choices[0].message.content
 
 
@@ -48,13 +71,13 @@ def provide_feedback(review_text, openai_api_key):
 def analyze_sentiment(review_improvement, openai_api_key):
     client = OpenAI(api_key = openai_api_key)
     
-    combined_reviews = " ".join(review_improvement[0:77])
+    combined_reviews = " ".join(review_improvement[0:80])
     prompt = "You are a concert organizer. Based on the following reviews of concerts, please highlight top 5 areas for improvements.\n" + combined_reviews
 
     chat_completion = client.chat.completions.create(
         model = "gpt-3.5-turbo-0125",
         messages = [{"role": "user", "content": prompt}],
-        max_tokens = 250,
+        max_tokens = 400,
         temperature = 0.7
     )
    
@@ -127,6 +150,20 @@ with CustomerTab:
         else:
             feedback = provide_feedback(review, openai_api_key)
             st.success(feedback)
+    
+
+
+    # ------------ Recommendation ---------- #
+    st.subheader('Recommendations')
+
+    # button to get recommendations
+    if st.button("Get Recommendations"):
+        if not openai_api_key:
+            st.error("Please enter your OpenAI API key to proceed.")
+        else:
+            recommendation = provide_recommendation(artist_selection)
+            st.success(recommendation)
+
 
 
 
