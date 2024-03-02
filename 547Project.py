@@ -49,9 +49,14 @@ def provide_feedback(review_text, openai_api_key):
 def provide_recommendation(artist):
     client = OpenAI(api_key = openai_api_key)
 
+    #prompt = "You are a member of the artist management company. Please recommend to the fans of " + artist + \
+    #         " some recent albums, movies, books or other works related to the artist. " + \
+    #         "Please make the response in bullet points and sound like a member of artist management team. " + \
+    #         "Please remove the beginning like 'certainly' or 'dear fans'."
+
     prompt = "You are a member of the artist management company. Please recommend to the fans of " + artist + \
              " some recent albums, movies, books or other works related to the artist. " + \
-             "Please make the response in bullet points and sound like a member of artist management team. " + \
+             "Please make the response in bullet points of the above categories and sound like a member of artist management team. " + \
              "Please remove the beginning like 'certainly' or 'dear fans'."
 
     chat_completion = client.chat.completions.create(
