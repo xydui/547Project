@@ -3,6 +3,7 @@ import pandas as pd
 from openai import OpenAI
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
+import csv
 
 # ---------------------------
 # Load Dataset
@@ -155,8 +156,12 @@ with CustomerTab:
             st.error("Please write a review to submit.")
         else:
             # Export review to csv file for furture analysis
-            review_inputs = pd.DataFrame({'Artist': [artist_selection], 'Review': [review]})
-            review_inputs.to_csv('https://github.com/xydui/547Project/blob/af6b0d736311eb0b5d5cbe83e810a6f9cd8a829a/review_input.csv', mode = 'a', index = False)
+            with open('https://raw.githubusercontent.com/xydui/547Project/main/review_input.csv', 'w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow([artist_selection, review])
+                
+            #review_inputs = pd.DataFrame({'Artist': [artist_selection], 'Review': [review]})
+            #review_inputs.to_csv('https://github.com/xydui/547Project/blob/af6b0d736311eb0b5d5cbe83e810a6f9cd8a829a/review_input.csv', mode = 'a', index = False)
             
             feedback = provide_feedback(review, openai_api_key)
             st.success(feedback)
