@@ -156,7 +156,7 @@ with CustomerTab:
         else:
             # Export review to csv file for furture analysis
             review_inputs = pd.DataFrame({'Artist': [artist_selection], 'Review': [review]})
-            review_inputs.to_csv('https://raw.githubusercontent.com/xydui/547Project/main/review_input.csv', mode = 'a', index = False)
+            review_inputs.to_csv('/547Project/review_input.csv', mode = 'a', index = False)
             
             feedback = provide_feedback(review, openai_api_key)
             st.success(feedback)
