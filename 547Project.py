@@ -154,12 +154,13 @@ with CustomerTab:
         elif not review:
             st.error("Please write a review to submit.")
         else:
-            feedback = provide_feedback(review, openai_api_key)
-            st.success(feedback)
             # Export review to csv file for furture analysis
             review_inputs = pd.DataFrame({'Artist': [artist_selection], 'Review': [review]})
-            review_inputs.to_csv('https://raw.githubusercontent.com/xydui/547Project/main/review_input.csv', index = False)
-    
+            review_inputs.to_csv('https://raw.githubusercontent.com/xydui/547Project/main/review_input.csv', mode = 'a', index = False)
+            
+            feedback = provide_feedback(review, openai_api_key)
+            st.success(feedback)
+            
 
 
     # ------------ Recommendation ---------- #
