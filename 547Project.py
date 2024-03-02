@@ -147,6 +147,10 @@ with CustomerTab:
     # Textbox for user to enter their review
     review = st.text_area("Please write your review here:")
 
+    # Export review to csv file for furture analysis
+    review_inputs = review.to_list()
+    review_inputs.to_csv('review_input.csv')
+    
     # Button to submit review
     if st.button("Submit Review"):
         if not openai_api_key:
