@@ -122,7 +122,7 @@ openai_api_key = st.sidebar.text_input("Enter your OpenAI API Key:", type = "pas
 
 # info about the app
 st.sidebar.markdown('-----')
-st.sidebar.write('Contact us on [Review I.Q.](www.Review-IQ.com).')
+st.sidebar.write('Contact us on [Review I.Q.](https://www.Review-IQ.com).')
 
 
 
