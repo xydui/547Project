@@ -89,27 +89,34 @@ def analyze_sentiment(review_improvement, openai_api_key):
 # ---------------------------
 # page settings
 st.set_page_config(
-    page_title = "Review IQ Master",
+    page_title = "Review I.Q.",
     layout = "wide",
     initial_sidebar_state = "expanded"
 )
 
 # title
-st.title('🎸 Review IQ Master')
+st.title('Review I.Q.')
 
 # tabbed navigation
-CustomerTab, OrganizerTab = st.tabs(['Customer Tab', 'Organizer Tab'])
+CustomerTab, OrganizerTab = st.tabs(['Concertgoers', 'Organizers'])
 
 
 
 # ---------------------------
 # Streamlit - Sidebar
 # ---------------------------
+# logo
+st.sidebar.image('https://raw.githubusercontent.com/xydui/547Project/main/logo.png')
+
 # Artist Selection
 artist_selection = st.sidebar.selectbox('Select an Artist:', df['Artist'].unique())
 
 # Textbox for entering OpenAI API key
 openai_api_key = st.sidebar.text_input("Enter your OpenAI API Key:", type = "password")
+
+# info about the app
+st.sidebar.markdown('-----')
+st.sidebar.write('Contact us on [Review I.Q.](www.Review-IQ.com).')
 
 
 
