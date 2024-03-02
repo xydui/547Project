@@ -148,7 +148,8 @@ with CustomerTab:
     review = st.text_area("Please write your review here:")
 
     # Export review to csv file for furture analysis
-    review_inputs = pd.DataFrame(review)
+    data = {'Artist': artist_selection, 'Review': review}
+    review_inputs = pd.DataFrame(data)
     review_inputs.to_csv('review_input.csv')
     
     # Button to submit review
