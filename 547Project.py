@@ -73,7 +73,7 @@ def provide_recommendation(artist):
 # ---------------------------
 # OpenAI API - Improvement
 # ---------------------------
-def analyze_sentiment(review_improvement, openai_api_key):
+def analyze_improvements(review_improvement, openai_api_key):
     client = OpenAI(api_key = openai_api_key)
     
     combined_reviews = " ".join(review_improvement[0:80])
@@ -227,5 +227,5 @@ with OrganizerTab:
         if not openai_api_key:
             st.error("Please enter your OpenAI API key to proceed.")
         else:
-            feedback = analyze_sentiment(review_improvement, openai_api_key)
+            feedback = analyze_improvements(review_improvement, openai_api_key)
             st.success(feedback)
