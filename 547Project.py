@@ -3,7 +3,7 @@ import pandas as pd
 from openai import OpenAI
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
-import csv
+
 
 # ---------------------------
 # Load Dataset
@@ -48,11 +48,6 @@ def provide_feedback(review_text, openai_api_key):
 # ---------------------------
 def provide_recommendation(artist):
     client = OpenAI(api_key = openai_api_key)
-
-    #prompt = "You are a member of the artist management company. Please recommend to the fans of " + artist + \
-    #         " some recent albums, movies, books or other works related to the artist. " + \
-    #         "Please make the response in bullet points and sound like a member of artist management team. " + \
-    #         "Please remove the beginning like 'certainly' or 'dear fans'."
 
     prompt = "You are a member of the artist management company. Please recommend to the fans of " + artist + \
              " some recent albums, movies, books or other works related to the artist. " + \
@@ -160,14 +155,6 @@ with CustomerTab:
         elif not review:
             st.error("Please write a review to submit.")
         else:
-            # Export review to csv file for furture analysis
-            #with open('https://raw.githubusercontent.com/xydui/547Project/main/review_input.csv', 'w', newline='') as file:
-            #    writer = csv.writer(file)
-            #    writer.writerow([artist_selection, review])
-                
-            #review_inputs = pd.DataFrame({'Artist': [artist_selection], 'Review': [review]})
-            #review_inputs.to_csv('https://github.com/xydui/547Project/blob/af6b0d736311eb0b5d5cbe83e810a6f9cd8a829a/review_input.csv', mode = 'a', index = False)
-            
             feedback = provide_feedback(review, openai_api_key)
             st.success(feedback)
             
