@@ -76,7 +76,7 @@ def provide_recommendation(artist):
 def analyze_improvements(review_improvement, openai_api_key):
     client = OpenAI(api_key = openai_api_key)
     
-    combined_reviews = " ".join(review_improvement[0:80])
+    combined_reviews = " ".join(review_improvement[0:100])
     prompt = "You are a concert organizer. Based on the following reviews of concerts, please highlight top 5 areas for improvements.\n" + combined_reviews
 
     chat_completion = client.chat.completions.create(
